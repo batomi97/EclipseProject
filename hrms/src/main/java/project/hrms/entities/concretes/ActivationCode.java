@@ -1,5 +1,7 @@
 package project.hrms.entities.concretes;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,18 +14,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Table(name="positions")
 @Entity
+@Table(name="activation_codes")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Position {
+public class ActivationCode {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="position_name")
-	private String positionName;
+	@Column(name="code")
+	private String code;
+	
+	@Column(name="is_confirmed")
+	private boolean isConfirmed;
+	
+	@Column(name="date_confirm")
+	private LocalDate dateConfirm;
+	
 	
 }
