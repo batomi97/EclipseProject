@@ -1,7 +1,5 @@
 package project.hrms.business.concretes;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +43,8 @@ public class AuthManager implements AuthService {
 	
 	@Override
 	public Result registerCandidate(Candidate candidate, String passwordAgain) {
-		if(!isUserEmptyInformationCheck(candidate)) {
-			return new ErrorResult("Lütfen istenilen bilgilerde boş alan girmeyiniz!");
+		if(!isBirthOfDayCheck(candidate)) {
+			return new ErrorResult("Lütfen doğum tarihini giriniz!");
 		}else if(!isUserMernisCheck(candidate)) { 
 			return new ErrorResult("Lütfen gerçek kişi bilgilerini giriniz!");
 		}else if(!isTcNumberCheck(candidate)) {
@@ -58,7 +56,6 @@ public class AuthManager implements AuthService {
 		}
 		else {	
 			this.candidateService.add(candidate);
-			
 			if(!this.activationCandidateService.createActivationCode(getByNationalId(candidate.getNationalId()).getUserId(),candidate)) {
 				return new ErrorResult("Emaile doğrulama kodu gönderilemedi.");
 			}else {
@@ -72,14 +69,6 @@ public class AuthManager implements AuthService {
 	public Result registerEmployer(Employer employer, String passwordAgain) {
 		if(isWebAdressAndEmailCheck(employer)) {
 			return new ErrorResult("Lütfen şirket domainli mail giriniz!");
-		}else if(!isCompanyNameCheck(employer)) {
-			return new ErrorResult("Lütfen şirket adını giriniz!");
-		}else if(!isPhoneNumberCheck(employer)) {
-			return new ErrorResult("Lütfen telefon numarasını giriniz!");
-		}else if(!isWebAdressCheck(employer)) {
-			return new ErrorResult("Lütfen web sitesini giriniz!");
-		}else if(!isPasswordEmployerCheck(employer)) {
-			return new ErrorResult("Lütfen şifrenizi giriniz!");
 		}else if(getByUser_EmailEmployerContains(employer.getUser().getEmail())!= null) {
 			return new ErrorResult("Bu email kullanılmaktadır!");
 		}else if(!employer.getUser().getPassword().equals(passwordAgain)) {
@@ -119,37 +108,12 @@ public class AuthManager implements AuthService {
 	public Employer getByEmail(String email) {
 		return this.employerDao.getByUser_Email(email);
 	}
-
-	public boolean isUserEmptyInformationCheck(Candidate candidate) {
-		if(isNameCheck(candidate) && isSurNameCheck(candidate) && isNationalIdCheck(candidate) && isBirthOfDayCheck(candidate)
-			&& isEmailCheck(candidate) && isPasswordCheck(candidate)) {
-			return true;
-		}else {
-			return false;
-		}
-	}
 	
 	public boolean isUserMernisCheck(Candidate candidate) {
 		if(candidateCheckService.checkIfRealPerson(candidate)) {
 			return true;
 		}else {
 			return false;
-		}
-	}
-	
-	public boolean isEmailCheck(Candidate candidate) {
-		if(candidate.getUser().getEmail().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isPasswordCheck(Candidate candidate) {
-		if(candidate.getUser().getPassword().isEmpty()) {
-			return false;
-		}else {
-			return true;
 		}
 	}
 	
@@ -163,30 +127,6 @@ public class AuthManager implements AuthService {
 		
 		return result;
 	}
-
-	public boolean isNameCheck(Candidate candidate) {
-		if(candidate.getName().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isSurNameCheck(Candidate candidate) {
-		if(candidate.getSurName().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isNationalIdCheck(Candidate candidate) {
-		if(candidate.getNationalId().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
 	
 	public boolean isBirthOfDayCheck(Candidate candidate) {
 		if(candidate.getBirthOfDay() == null) {
@@ -196,40 +136,8 @@ public class AuthManager implements AuthService {
 		}
 	}
 	
-	public boolean isCompanyNameCheck(Employer employer) {
-		if(employer.getCompanyName().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
 	public boolean isWebAdressAndEmailCheck(Employer employer) {
 		if(employer.getUser().getEmail().contains(employer.getWebAdress())) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isPhoneNumberCheck(Employer employer) {
-		if(employer.getPhoneNumber().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isWebAdressCheck(Employer employer) {
-		if(employer.getWebAdress().isEmpty()) {
-			return false;
-		}else {
-			return true;
-		}
-	}
-	
-	public boolean isPasswordEmployerCheck(Employer employer) {
-		if(employer.getUser().getPassword().isEmpty()) {
 			return false;
 		}else {
 			return true;

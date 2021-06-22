@@ -16,4 +16,5 @@ public interface ActivationCandidateDao extends JpaRepository<ActivationCandidat
 	@Transactional
 	@Query("Update ActivationCode Set isConfirmed = true, dateConfirm=:date where id=:id")	
 	void updateDateConfirm(@Param("id") int id, @Param("date") LocalDate date);
+	
 }

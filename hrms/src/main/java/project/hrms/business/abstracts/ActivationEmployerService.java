@@ -7,6 +7,7 @@ import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.ActivationEmployer;
 import project.hrms.entities.concretes.Employer;
 import project.hrms.entities.concretes.SystemPersonnel;
+import project.hrms.entities.dtos.ActivationEmployerDto;
 
 public interface ActivationEmployerService {
 
@@ -16,4 +17,5 @@ public interface ActivationEmployerService {
 	Result checkActivationCodeFromSystemPersonnel(int activationId, int personnelId);
 	
 	SystemPersonnel getByUserId(int userId);
+	DataResult<List<ActivationEmployerDto>> getActivationEmployerDetails();
 }

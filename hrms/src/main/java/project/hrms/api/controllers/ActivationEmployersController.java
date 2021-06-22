@@ -13,6 +13,7 @@ import project.hrms.business.abstracts.ActivationEmployerService;
 import project.hrms.core.utilities.results.DataResult;
 import project.hrms.core.utilities.results.Result;
 import project.hrms.entities.concretes.ActivationEmployer;
+import project.hrms.entities.dtos.ActivationEmployerDto;
 
 @RestController
 @RequestMapping("/api/activationemployers")
@@ -24,6 +25,11 @@ public class ActivationEmployersController {
 	@GetMapping("/getall")
 	public DataResult<List<ActivationEmployer>> getAll() {
 		return this.activationEmployerService.getAll();
+	}
+	
+	@GetMapping("/getactivationemployerdetails")
+	public DataResult<List<ActivationEmployerDto>> getActivationEmployerDetails() {
+		return this.activationEmployerService.getActivationEmployerDetails();
 	}
 	
 	@PostMapping("/checkactivationcode")

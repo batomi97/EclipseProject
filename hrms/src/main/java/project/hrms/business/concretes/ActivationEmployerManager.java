@@ -19,6 +19,7 @@ import project.hrms.entities.concretes.ActivationCode;
 import project.hrms.entities.concretes.ActivationEmployer;
 import project.hrms.entities.concretes.Employer;
 import project.hrms.entities.concretes.SystemPersonnel;
+import project.hrms.entities.dtos.ActivationEmployerDto;
 
 @Service
 public class ActivationEmployerManager implements ActivationEmployerService {
@@ -73,6 +74,16 @@ public class ActivationEmployerManager implements ActivationEmployerService {
 		}
 	}
 	
+	@Override
+	public SystemPersonnel getByUserId(int userId) {
+		return this.systemPersonnelDao.getByUserId(userId);
+	}
+	
+	@Override
+	public DataResult<List<ActivationEmployerDto>> getActivationEmployerDetails() {
+		return new SuccessDataResult<List<ActivationEmployerDto>>(this.activationEmployerDao.getActivationEmployerDetails(),"Data listelendi.");
+	}
+	
 	public boolean isSuccessCode(String activationCode, int activationId) {
 		boolean isActivationCode = false;
 		for(ActivationEmployer checkActivationCode:this.activationEmployerDao.findAll()) {
@@ -82,11 +93,6 @@ public class ActivationEmployerManager implements ActivationEmployerService {
 			}
 		}
 		return isActivationCode;
-	}
-	
-	@Override
-	public SystemPersonnel getByUserId(int userId) {
-		return this.systemPersonnelDao.getByUserId(userId);
 	}
 	
 	private String codeGenerator() {
